@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  **/
+const matcher = require('matcher');
+
 module.exports = function(RED) {
     function GateNode(config) {
         RED.nodes.createNode(this,config);
@@ -43,7 +45,7 @@ module.exports = function(RED) {
         node.on('input', function(msg) {
             state = context.get('state');
            // Change state
-            if (msg.topic !== undefined && msg.topic.toLowerCase() === node.controlTopic) {
+            if (msg.topic !== undefined && matcher.isMatch(msg.topic, node.controlTopic)) {
                 if (typeof msg.payload != 'string'){
                     node.error('Command must be a string');
                     } else {
